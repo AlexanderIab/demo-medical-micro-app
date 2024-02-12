@@ -1,0 +1,3 @@
+rootProject.name = 'demo-medical-micro-app'
+includeBuild 'license-service'
+
