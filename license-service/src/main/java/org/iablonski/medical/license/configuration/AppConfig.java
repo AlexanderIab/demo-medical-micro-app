@@ -10,9 +10,9 @@ public class AppConfig {
     @Bean
     public ResourceBundleMessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
+        messageSource.setUseCodeAsDefaultMessage(true);
         messageSource.setBasename("messages");
         messageSource.setDefaultEncoding("UTF-8");
-        messageSource.setUseCodeAsDefaultMessage(true);
         return messageSource;
     }
 }

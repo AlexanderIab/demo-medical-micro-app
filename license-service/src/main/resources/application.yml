@@ -1,3 +1,14 @@
-spring:
-  web:
-    locale: en_GB
+management:
+  endpoints:
+    web:
+      base-path: "/"
+    enabled-by-default: false
+  endpoint:
+    health:
+      enabled: true
+      show-details: always
+  health:
+    db:
+      enabled: false
+    diskspace:
+      enabled: true
