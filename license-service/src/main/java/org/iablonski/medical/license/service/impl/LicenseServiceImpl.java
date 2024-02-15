@@ -1,42 +1,46 @@
 package org.iablonski.medical.license.service.impl;
 
+import org.iablonski.medical.license.configuration.LicensePropConfig;
 import org.iablonski.medical.license.domain.License;
+import org.iablonski.medical.license.repository.LicenseRepo;
 import org.iablonski.medical.license.service.LicenseService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.MessageSource;
 import org.springframework.stereotype.Service;
 
 import java.util.Locale;
-import java.util.Random;
 import java.util.UUID;
 
 @Service
 public class LicenseServiceImpl implements LicenseService {
 
-    MessageSource messageSource;
+    private final MessageSource messageSource;
+    private final LicenseRepo licenseRepo;
+    private final LicensePropConfig config;
 
     @Autowired
-    public LicenseServiceImpl(MessageSource messageSource) {
+    public LicenseServiceImpl(MessageSource messageSource, LicenseRepo licenseRepo, LicensePropConfig config) {
         this.messageSource = messageSource;
+        this.licenseRepo = licenseRepo;
+        this.config = config;
     }
 
     @Override
-    public License getLicense(String licenseId, String organizationId) {
-        License license = new License();
-        license.setId(UUID.randomUUID());
-        license.setLicenseId(licenseId);
-        license.setOrganizationId(organizationId);
-        license.setTitle("Medical research");
-        license.setProductName("Some lab");
-        license.setLicenseType("part");
-        return license;
+    public License getLicenseByLicenseIdAndOrganisationId(UUID licenseId, UUID organisationId, Locale locale) {
+        License license = licenseRepo.findByLicenseIdAndOrganisationId(licenseId, organisationId)
+                .orElseThrow(() -> new IllegalArgumentException(
+                        String.format(messageSource.getMessage(
+                                "license.search.error.message", null, locale),
+                                licenseId, organisationId)));
+        return license.licenseWithTrace(config.getProperty());
     }
 
     @Override
-    public String createLicense(License license, String organizationId, Locale locale) {
+    public String createLicense(License license,  Locale locale) {
         String responseMessage = null;
         if (license != null) {
-            license.setOrganizationId(organizationId);
+            license.setTrace(config.getProperty());
+            licenseRepo.save(license);
             responseMessage = String.format(
                     messageSource.getMessage(
                             "license.create.message", null, locale), license);
@@ -45,21 +49,24 @@ public class LicenseServiceImpl implements LicenseService {
     }
 
     @Override
-    public String updateLicense(License license, String organizationId) {
+    public String updateLicense(License license, Locale locale) {
         String responseMessage = null;
-        if (license != null) {
-            license.setOrganizationId(organizationId);
+        boolean licenseExists = licenseRepo.existsById(license.getLicenseId());
+        if (licenseExists) {
+            license.setOrganisationId(license.getOrganisationId());
+            license.setLicenseType(license.getLicenseType());
+            license.setServiceType(license.getServiceType());
+            license.setTrace(config.getProperty());
             responseMessage = String.format(messageSource.getMessage(
-                            "license.update.message", null, null), license);
+                    "license.update.message", null, locale), license);
         }
         return responseMessage;
     }
 
     @Override
-    public String deleteLicense(String licenseId, String organizationId, Locale locale) {
-        String responseMessage = null;
-        responseMessage = String.format(messageSource.getMessage(
-                "license.delete.message", null, locale), licenseId, organizationId);
-        return responseMessage;
+    public String deleteLicense(UUID licenseId, Locale locale) {
+        licenseRepo.deleteById(licenseId);
+        return String.format(messageSource.getMessage(
+                "license.delete.message", null, locale), licenseId);
     }
 }

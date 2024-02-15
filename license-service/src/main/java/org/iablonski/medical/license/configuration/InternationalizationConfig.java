@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 import org.springframework.context.support.ResourceBundleMessageSource;
 
 @Configuration
-public class AppConfig {
+public class InternationalizationConfig {
 
     @Bean
     public ResourceBundleMessageSource messageSource() {

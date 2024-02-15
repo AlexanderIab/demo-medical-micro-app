@@ -1,0 +1,27 @@
+server:
+  port: 8888
+spring:
+  application:
+    name: config-server
+  profiles:
+    active: native, git
+  cloud:
+    config:
+      server:
+#        vault:
+#          port: 8200
+#          host: 127.0.0.1
+#          token: hvs.BvJeo5zYOvSDDkE1XGttiSBY
+#          kv-version: 2
+        native:
+          search-locations: classpath:/config
+        git:
+          uri: https://github.com/AlexanderIab/config-medical-micro.git
+          basedir: file://C:/git-config-medical-micro
+          clone-on-start: true
+          username: AlexanderIab
+          password: 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
+          default-label: main
+          search-paths: license-service
+encrypt:
+  key: qazxswertdfgbvc
