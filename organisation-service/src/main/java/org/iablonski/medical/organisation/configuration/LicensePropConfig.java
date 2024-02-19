@@ -1,4 +1,4 @@
-package org.iablonski.medical.license.configuration;
+package org.iablonski.medical.organisation.configuration;
 
 import lombok.Getter;
 import lombok.Setter;

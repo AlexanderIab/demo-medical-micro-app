@@ -4,4 +4,4 @@ spring:
   datasource:
     url: jdbc:postgresql://localhost:5432/medical_demo
     username: postgres
-    password: {cipher}216c9230697d91c507c39a92981578fb080beba66682f3d2ddcb0b9186a2f8b98a10ffc24967fbe8710e729762f6bd252189517960cc1efe851f87408d455558
+    password: '{cipher}216c9230697d91c507c39a92981578fb080beba66682f3d2ddcb0b9186a2f8b98a10ffc24967fbe8710e729762f6bd252189517960cc1efe851f87408d455558'

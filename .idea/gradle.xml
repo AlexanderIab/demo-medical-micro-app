@@ -33,10 +33,26 @@
         </option>
       </GradleProjectSettings>
       <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/eureka-server" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/eureka-server" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
         <option name="externalProjectPath" value="$PROJECT_DIR$/license-service" />
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$/license-service" />
+          </set>
+        </option>
+      </GradleProjectSettings>
+      <GradleProjectSettings>
+        <option name="externalProjectPath" value="$PROJECT_DIR$/organisation-service" />
+        <option name="modules">
+          <set>
+            <option value="$PROJECT_DIR$/organisation-service" />
           </set>
         </option>
       </GradleProjectSettings>

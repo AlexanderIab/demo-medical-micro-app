@@ -1,6 +1,5 @@
 package org.iablonski.medical.license.service.impl;
 
-import org.iablonski.medical.license.configuration.LicensePropConfig;
 import org.iablonski.medical.license.domain.License;
 import org.iablonski.medical.license.repository.LicenseRepo;
 import org.iablonski.medical.license.service.LicenseService;
@@ -16,30 +15,26 @@ public class LicenseServiceImpl implements LicenseService {
 
     private final MessageSource messageSource;
     private final LicenseRepo licenseRepo;
-    private final LicensePropConfig config;
 
     @Autowired
-    public LicenseServiceImpl(MessageSource messageSource, LicenseRepo licenseRepo, LicensePropConfig config) {
+    public LicenseServiceImpl(MessageSource messageSource, LicenseRepo licenseRepo) {
         this.messageSource = messageSource;
         this.licenseRepo = licenseRepo;
-        this.config = config;
     }
 
     @Override
     public License getLicenseByLicenseIdAndOrganisationId(UUID licenseId, UUID organisationId, Locale locale) {
-        License license = licenseRepo.findByLicenseIdAndOrganisationId(licenseId, organisationId)
+        return licenseRepo.findByLicenseIdAndOrganisationId(licenseId, organisationId)
                 .orElseThrow(() -> new IllegalArgumentException(
                         String.format(messageSource.getMessage(
                                 "license.search.error.message", null, locale),
                                 licenseId, organisationId)));
-        return license.licenseWithTrace(config.getProperty());
     }
 
     @Override
     public String createLicense(License license,  Locale locale) {
         String responseMessage = null;
         if (license != null) {
-            license.setTrace(config.getProperty());
             licenseRepo.save(license);
             responseMessage = String.format(
                     messageSource.getMessage(
@@ -53,12 +48,13 @@ public class LicenseServiceImpl implements LicenseService {
         String responseMessage = null;
         boolean licenseExists = licenseRepo.existsById(license.getLicenseId());
         if (licenseExists) {
-            license.setOrganisationId(license.getOrganisationId());
-            license.setLicenseType(license.getLicenseType());
-            license.setServiceType(license.getServiceType());
-            license.setTrace(config.getProperty());
+            License savingLicense = new License();
+            savingLicense.setOrganisationId(license.getOrganisationId());
+            savingLicense.setLicenseType(license.getLicenseType());
+            savingLicense.setServiceType(license.getServiceType());
+            licenseRepo.save(savingLicense);
             responseMessage = String.format(messageSource.getMessage(
-                    "license.update.message", null, locale), license);
+                    "license.update.message", null, locale), savingLicense);
         }
         return responseMessage;
     }

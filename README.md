@@ -6,4 +6,4 @@ Java 17
 - Spring Actuator
 - Spring HATEOAS
 - Spring Cloud Configuration
-- 
+- Spring Cloud DC

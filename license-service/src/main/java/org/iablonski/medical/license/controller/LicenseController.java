@@ -38,24 +38,24 @@ public class LicenseController {
                         .updateLicense(organisationId, license, locale))
                         .withRel("updateLicense"),
                 linkTo(methodOn(LicenseController.class)
-                        .deleteLicense(license.getLicenseId(), organisationId, null))
+                        .deleteLicense(license.getLicenseId(), organisationId, locale))
                         .withRel("deleteLicense"));
         return ResponseEntity.ok(license);
     }
 
     //TODO:Message Response extends HATEOAS after WebFlux
     @PutMapping
-    public ResponseEntity<String> updateLicense(@PathVariable("organisationId") UUID organizationId,
-                                                @RequestBody License request,
+    public ResponseEntity<String> updateLicense(@PathVariable("organisationId") UUID organisationId,
+                                                @RequestBody License license,
                                                 @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
 
-        return ResponseEntity.ok(licenseService.updateLicense(request, locale));
+        return ResponseEntity.ok(licenseService.updateLicense(license, locale));
     }
 
     //TODO:Message Response extends HATEOAS after WebFlux
     @PostMapping
     public ResponseEntity<String> createLicense(@RequestBody License request,
-                                                @PathVariable("organisationId") UUID organizationId,
+                                                @PathVariable("organisationId") UUID organisationId,
                                                 @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
         return ResponseEntity.ok(licenseService.createLicense(request, locale));
     }
@@ -63,7 +63,7 @@ public class LicenseController {
     //TODO:Message Response extends HATEOAS after WebFlux
     @DeleteMapping(value = "/{licenseId}")
     public ResponseEntity<String> deleteLicense(@PathVariable("licenseId") UUID licenseId,
-                                                @PathVariable("organisationId") UUID organizationId,
+                                                @PathVariable("organisationId") UUID organisationId,
                                                 @RequestHeader(value = "Accept-Language", required = false) Locale locale) {
         return ResponseEntity.ok(licenseService.deleteLicense(licenseId, locale));
     }

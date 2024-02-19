@@ -22,6 +22,5 @@ spring:
           username: AlexanderIab
           password: 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
           default-label: main
-          search-paths: license-service
 encrypt:
   key: qazxswertdfgbvc
