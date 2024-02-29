@@ -17,6 +17,12 @@ configurations {
     }
 }
 
+jar{
+    manifest {
+        attributes 'Main-Class': 'org.iablonski.medical.license.LicenseServiceApplication'
+    }
+}
+
 repositories {
     mavenCentral()
 }
