@@ -4,17 +4,10 @@ spring:
   application:
     name: config-server
   profiles:
-    active: native, git
+    active: git
   cloud:
     config:
       server:
-#        vault:
-#          port: 8200
-#          host: 127.0.0.1
-#          token: hvs.BvJeo5zYOvSDDkE1XGttiSBY
-#          kv-version: 2
-        native:
-          search-locations: classpath:/config
         git:
           uri: https://github.com/AlexanderIab/config-medical-micro.git
           basedir: file://C:/git-config-medical-micro
